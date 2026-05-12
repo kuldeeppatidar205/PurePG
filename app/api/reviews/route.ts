@@ -57,9 +57,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Listing not found' }, { status: 404 });
     }
 
-    // Students can only rate PG owner listings (type 'pg')
-    if (listing.listingType !== 'pg') {
-      return NextResponse.json({ error: 'You can only rate PG listings posted by owners' }, { status: 403 });
+    // Prevent users from rating their own listings
+    if (listing.userId.toString() === payload.userId) {
+      return NextResponse.json({ error: 'You cannot rate your own listing' }, { status: 403 });
     }
 
     const distance = calculateDistance(

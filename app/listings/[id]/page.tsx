@@ -226,22 +226,22 @@ export default function ListingDetailPage() {
       </nav>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-none border border-transparent dark:border-gray-700 p-8 transition-colors duration-200 mb-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-none border border-transparent dark:border-gray-700 p-6 sm:p-8 transition-colors duration-200 mb-8">
           <div className="mb-8">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-10">
-              <div>
-                <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
-                  ₹{(listing.price ?? 0).toLocaleString('en-IN')}<span className="text-xl text-gray-500 font-normal">/month</span>
+            <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8 sm:mb-10">
+              <div className="w-full">
+                <h1 className="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mb-3 sm:mb-4">
+                  ₹{(listing.price ?? 0).toLocaleString('en-IN')}<span className="text-lg sm:text-xl text-gray-500 font-normal">/month</span>
                 </h1>
-                <p className="text-2xl text-gray-600 dark:text-gray-300 flex items-center gap-2">
+                <p className="text-lg sm:text-2xl text-gray-600 dark:text-gray-300 flex items-center gap-2">
                   <span className="text-blue-600">📍</span>
                   {listing.listingType === 'handover' 
                     ? `${listing.userId?.hostelName || 'Hostel'}${listing.userId?.roomNumber ? ` • Room ${listing.userId.roomNumber}` : ''}`
                     : listing.address || 'Address Not Provided'}
                 </p>
-                <div className="mt-2 flex gap-2">
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest ${
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className={`px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest ${
                     listing.listingType === 'handover' 
                       ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' 
                       : 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300'
@@ -249,23 +249,23 @@ export default function ListingDetailPage() {
                     {listing.listingType === 'handover' ? 'Student Handover' : 'PG Property'}
                   </span>
                   {listing.listingType === 'pg' && (
-                    <span className="px-3 py-1 bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 rounded-full text-xs font-bold uppercase tracking-widest">
+                    <span className="px-3 py-1 bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest">
                       {listing.availableRooms}/{listing.totalRooms} Rooms Available
                     </span>
                   )}
                 </div>
               </div>
               {isOwner && (
-                <div className="flex gap-3 w-full md:w-auto">
+                <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                   <Link
                     href={`/create-listing?id=${id}`}
-                    className="flex-1 md:flex-none px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition shadow-lg shadow-blue-100 dark:shadow-none text-center"
+                    className="flex-1 px-6 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-bold transition shadow-lg shadow-blue-100 dark:shadow-none text-center text-sm"
                   >
-                    Edit / Update Availability
+                    Edit Listing
                   </Link>
                   <button
                     onClick={handleDeleteListing}
-                    className="flex-1 md:flex-none px-6 py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/50 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/40 font-bold transition"
+                    className="flex-1 px-6 py-2.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-900/50 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/40 font-bold transition text-sm"
                   >
                     Delete
                   </button>
@@ -273,12 +273,12 @@ export default function ListingDetailPage() {
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-gray-100 dark:border-gray-700 pt-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 border-t border-gray-100 dark:border-gray-700 pt-8 sm:pt-10">
               {/* Main Details */}
-              <div className="md:col-span-2 space-y-10">
+              <div className="md:col-span-2 space-y-8 sm:space-y-10">
                 <section>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 uppercase tracking-wider">Description</h2>
-                  <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed whitespace-pre-wrap">
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4 uppercase tracking-wider">Description</h2>
+                  <p className="text-gray-700 dark:text-gray-300 text-base sm:text-lg leading-relaxed whitespace-pre-wrap">
                     {listing.roomDetails}
                   </p>
                 </section>
@@ -293,31 +293,31 @@ export default function ListingDetailPage() {
                     listing.legacyBundle.other
                   ) && (
                     <section>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 uppercase tracking-wider">Handover Items</h3>
-                      <div className="grid grid-cols-2 gap-4">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 uppercase tracking-wider">Handover Items</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {listing.legacyBundle.mattress && (
-                          <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl font-bold">
-                            <span className="text-2xl">🛏️</span> Mattress
+                          <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl font-bold text-sm sm:text-base">
+                            <span className="text-xl sm:text-2xl">🛏️</span> Mattress
                           </div>
                         )}
                         {listing.legacyBundle.cooler && (
-                          <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl font-bold">
-                            <span className="text-2xl">❄️</span> Cooler
+                          <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl font-bold text-sm sm:text-base">
+                            <span className="text-xl sm:text-2xl">❄️</span> Cooler
                           </div>
                         )}
                         {listing.legacyBundle.shelf && (
-                          <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl font-bold">
-                            <span className="text-2xl">📦</span> Shelf
+                          <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl font-bold text-sm sm:text-base">
+                            <span className="text-xl sm:text-2xl">📦</span> Shelf
                           </div>
                         )}
                         {listing.legacyBundle.lamp && (
-                          <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl font-bold">
-                            <span className="text-2xl">💡</span> Lamp
+                          <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-xl font-bold text-sm sm:text-base">
+                            <span className="text-xl sm:text-2xl">💡</span> Lamp
                           </div>
                         )}
                         {listing.legacyBundle.other && (
-                          <div className="col-span-2 flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-xl font-bold italic">
-                            <span className="text-2xl">📌</span> {listing.legacyBundle.other}
+                          <div className="sm:col-span-2 flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 rounded-xl font-bold italic text-sm sm:text-base">
+                            <span className="text-xl sm:text-2xl">📌</span> {listing.legacyBundle.other}
                           </div>
                         )}
                       </div>
@@ -326,10 +326,10 @@ export default function ListingDetailPage() {
                 ) : (
                   listing.amenities && listing.amenities.length > 0 && (
                     <section>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 uppercase tracking-wider">Facilities</h3>
-                      <div className="flex flex-wrap gap-3">
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 uppercase tracking-wider">Facilities</h3>
+                      <div className="flex flex-wrap gap-2 sm:gap-3">
                         {listing.amenities.map((amenity: string, idx: number) => (
-                          <div key={idx} className="px-4 py-2 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-xl font-bold">
+                          <div key={idx} className="px-3 py-1.5 sm:px-4 sm:py-2 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-xl font-bold text-xs sm:text-sm">
                             ✨ {amenity}
                           </div>
                         ))}
@@ -340,40 +340,36 @@ export default function ListingDetailPage() {
               </div>
 
               {/* Sidebar Info */}
-              <div className="space-y-8">
+              <div className="space-y-6 sm:space-y-8">
                 <div className="bg-gray-50 dark:bg-gray-900/50 rounded-2xl p-6 border border-gray-100 dark:border-gray-800">
-                  <h3 className="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">Availability</h3>
-                  <p className="text-gray-900 dark:text-white font-bold text-lg">
+                  <h3 className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 sm:mb-4">Availability</h3>
+                  <p className="text-gray-900 dark:text-white font-bold text-base sm:text-lg">
                     {listing.availableDate ? new Date(listing.availableDate).toLocaleDateString('en-IN', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
                     }) : 'TBA'}
                   </p>
-                  <p className="text-xs text-gray-500 mt-2">Verified authentic coordinates</p>
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6">
-                  <h3 className="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">Posted By</h3>
-                  <p className="text-gray-900 dark:text-white font-extrabold text-xl mb-1">
+                  <h3 className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 sm:mb-4">Posted By</h3>
+                  <p className="text-gray-900 dark:text-white font-extrabold text-lg sm:text-xl mb-1">
                     {listing.userId?.name || 'Unknown User'}
                   </p>
-                  <p className="text-xs text-gray-500 font-medium uppercase tracking-tighter">
+                  <p className="text-[10px] sm:text-xs text-gray-500 font-medium uppercase tracking-tighter">
                     {listing.userId?.role === 'student' ? 'Student' : 'PG Owner'} • Since {new Date(listing.createdAt).toLocaleDateString()}
                   </p>
                   <div className="mt-6">
                     {token ? (
-                      <button className="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl font-bold hover:opacity-90 transition shadow-lg dark:shadow-none">
+                      <button className="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl font-bold hover:opacity-90 transition shadow-lg dark:shadow-none text-sm">
                         Contact {listing.userId?.role === 'student' ? 'Student' : 'Owner'}
                       </button>
                     ) : (
-                      <Link href="/login" className="block w-full py-3 bg-blue-600 text-white rounded-xl font-bold text-center hover:bg-blue-700 transition">
+                      <Link href="/login" className="block w-full py-3 bg-blue-600 text-white rounded-xl font-bold text-center hover:bg-blue-700 transition text-sm">
                         Login to Contact
                       </Link>
                     )}
-                    <p className="text-[10px] text-center text-gray-400 mt-3 font-medium uppercase tracking-widest">
-                      Institutional Proxy Protected
-                    </p>
                   </div>
                 </div>
               </div>

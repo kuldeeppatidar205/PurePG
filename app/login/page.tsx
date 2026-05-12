@@ -60,23 +60,25 @@ function LoginForm() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-none border border-transparent dark:border-gray-700 p-8 transition-colors duration-200">
-      <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl dark:shadow-none border border-gray-100 dark:border-slate-800 p-8 transition-all duration-300 backdrop-blur-sm animate-slide-up">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-xl text-red-700 dark:text-red-400 text-sm font-medium">
+          <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-2xl text-red-700 dark:text-red-400 text-sm font-bold flex items-center gap-2 animate-slide-down">
+            <span>⚠️</span>
             {error}
           </div>
         )}
 
         {success && (
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-900/50 rounded-xl text-green-700 dark:text-green-400 text-sm font-medium">
+          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-900/50 rounded-2xl text-green-700 dark:text-green-400 text-sm font-bold flex items-center gap-2 animate-slide-down">
+            <span>✓</span>
             {success}
           </div>
         )}
 
-        <div>
-          <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-1 ml-1">
-            Personal Email
+        <div className="space-y-2">
+          <label className="block text-xs font-black text-gray-600 dark:text-slate-400 uppercase tracking-widest ml-1">
+            📧 Personal Email
           </label>
           <input
             type="email"
@@ -84,17 +86,17 @@ function LoginForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white transition-colors duration-200"
+            className="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white transition-all duration-200 font-medium placeholder-gray-400"
             placeholder="john@example.com"
           />
         </div>
 
-        <div>
-          <div className="flex justify-between items-center mb-1 ml-1">
-            <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-              Password
+        <div className="space-y-2">
+          <div className="flex justify-between items-center ml-1 gap-2">
+            <label className="block text-xs font-black text-gray-600 dark:text-slate-400 uppercase tracking-widest">
+              🔒 Password
             </label>
-            <Link href="#" className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-tighter hover:underline">
+            <Link href="#" className="text-[10px] font-black text-primary-600 dark:text-primary-400 uppercase tracking-tighter hover:text-primary-700 smooth-color transition-colors">
               Forgot?
             </Link>
           </div>
@@ -104,7 +106,7 @@ function LoginForm() {
             value={formData.password}
             onChange={handleChange}
             required
-            className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-white transition-colors duration-200"
+            className="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white transition-all duration-200 font-medium placeholder-gray-400"
             placeholder="••••••••"
           />
         </div>
@@ -112,9 +114,9 @@ function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:bg-gray-400 font-bold transition shadow-lg shadow-blue-100 dark:shadow-none mt-4 uppercase tracking-widest text-xs"
+          className="w-full py-4 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 disabled:from-gray-400 disabled:to-gray-400 text-white rounded-2xl font-black transition-all shadow-lg shadow-primary-500/30 hover:shadow-xl mt-6 uppercase tracking-widest text-sm btn-press disabled:cursor-not-allowed disabled:opacity-70"
         >
-          {loading ? 'Logging in...' : 'Sign In'}
+          {loading ? '⏳ Signing in...' : '✓ Sign In'}
         </button>
       </form>
     </div>
@@ -123,37 +125,43 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-200 py-12 px-4 relative">
-       <div className="absolute top-4 right-4">
+    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-slate-950 transition-colors duration-500 py-12 px-4 relative overflow-x-hidden">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-[-20%] right-[-20%] w-[50%] h-[50%] rounded-full bg-primary-500/10 blur-[120px] animate-float" />
+        <div className="absolute bottom-[-20%] left-[-20%] w-[50%] h-[50%] rounded-full bg-blue-500/10 blur-[120px] animate-float" style={{ animationDelay: '2s' }} />
+      </div>
+
+      <div className="absolute top-4 right-4 z-50">
         <ThemeToggle />
       </div>
 
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+      <div className="w-full max-w-md animate-scale-in">
+        <div className="text-center mb-12 animate-slide-down">
+          <Link href="/" className="flex items-center justify-center gap-2 mb-6 group">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl flex items-center justify-center text-white font-black text-lg shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform">
               CP
             </div>
-            <span className="text-2xl font-bold text-gray-900 dark:text-white transition-colors duration-200">CampusPass</span>
+            <span className="text-3xl font-black text-gray-900 dark:text-white transition-colors duration-200 tracking-tighter">CampusPass</span>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-200">Welcome Back</h1>
-          <p className="text-gray-600 dark:text-gray-400 transition-colors duration-200">Login to your account</p>
+          <h1 className="text-4xl font-black text-gray-900 dark:text-white mb-3 transition-colors duration-200 tracking-tighter">Welcome Back</h1>
+          <p className="text-gray-600 dark:text-slate-400 transition-colors duration-200 font-medium">Sign in to your account</p>
         </div>
 
         <ClientOnly>
           <Suspense fallback={
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 flex items-center justify-center min-h-[300px]">
-              <div className="text-gray-600 dark:text-gray-400 animate-pulse font-medium">Loading login form...</div>
+            <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl p-8 flex items-center justify-center min-h-[300px] border border-gray-100 dark:border-slate-800 shimmer">
+              <div className="text-gray-600 dark:text-slate-400 animate-pulse font-medium">Loading form...</div>
             </div>
           }>
             <LoginForm />
           </Suspense>
         </ClientOnly>
 
-        <p className="text-center text-gray-600 dark:text-gray-400 mt-8 font-medium">
+        <p className="text-center text-gray-600 dark:text-slate-400 mt-8 font-medium smooth-color transition-colors">
           Don't have an account?{' '}
-          <Link href="/register" className="text-blue-600 dark:text-blue-400 hover:underline font-bold">
-            Register
+          <Link href="/register" className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-black smooth-color transition-colors">
+            Register here
           </Link>
         </p>
       </div>

@@ -10,6 +10,7 @@ interface Listing {
   roomDetails: string;
   price: number;
   availableDate: string;
+  listingType: 'handover' | 'pg';
   userId: {
     name: string;
     hostelName?: string;
@@ -52,94 +53,129 @@ export default function BrowsePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500 overflow-x-hidden">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary-500/5 blur-[120px] animate-float" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-500/5 blur-[120px] animate-float" style={{ animationDelay: '2s' }} />
+      </div>
+
       {/* Navigation */}
-      <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 transition-colors duration-200">
+      <nav className="glass sticky top-0 z-50 border-b border-gray-200/50 dark:border-slate-800/50 transition-all duration-300 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform">
               CP
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">CampusPass</h1>
+            <h1 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white tracking-tighter">CampusPass</h1>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <ThemeToggle />
-            <Link
-              href="/create-listing"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition shadow-md shadow-blue-100 dark:shadow-none"
-            >
-              Post Room
-            </Link>
-            <Link
-              href="/profile"
-              className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium"
-            >
-              Profile
-            </Link>
+            <div className="hidden sm:flex items-center gap-4">
+              <Link
+                href="/create-listing"
+                className="px-5 py-2.5 bg-primary-600 text-white rounded-xl hover:bg-primary-700 font-bold transition shadow-lg shadow-primary-500/20 active:scale-95"
+              >
+                Post Room
+              </Link>
+              <Link
+                href="/profile"
+                className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors border border-gray-200 dark:border-slate-700 shadow-sm"
+              >
+                👤
+              </Link>
+            </div>
+            {/* Mobile Navigation Icons */}
+            <div className="sm:hidden flex items-center gap-1">
+              <Link href="/create-listing" className="p-2 text-gray-700 dark:text-slate-300">
+                <span className="text-xl">✍️</span>
+              </Link>
+              <Link href="/profile" className="p-2 text-gray-700 dark:text-slate-300">
+                <span className="text-xl">👤</span>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-12">Available Rooms</h1>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-12 gap-6">
+          <div className="text-center sm:text-left">
+             <h1 className="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white tracking-tighter mb-2">Available Rooms</h1>
+             <p className="text-gray-500 dark:text-slate-400 font-medium">Find the perfect spot for your next semester</p>
+          </div>
+          <div className="flex bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-gray-100 dark:border-slate-800 shadow-sm">
+             <button className="px-6 py-2 bg-primary-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-primary-500/20">Latest</button>
+             <button className="px-6 py-2 text-gray-500 dark:text-slate-400 font-bold text-sm hover:text-primary-600 transition-colors">Budget</button>
+          </div>
+        </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-gray-200 dark:bg-gray-800 rounded-xl h-64 animate-pulse" />
+              <div key={i} className="bg-slate-200/50 dark:bg-slate-900/50 rounded-3xl h-80 shimmer border border-gray-200 dark:border-slate-800" style={{ animation: `slideUp 0.5s ease-out ${i * 0.05}s both` }} />
             ))}
           </div>
         ) : listings.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {listings.map((listing) => (
                 <Link
                   key={listing._id}
                   href={`/listings/${listing._id}`}
-                  className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg dark:hover:border-gray-600 transition group"
+                  className="group bg-white dark:bg-slate-900 rounded-[32px] shadow-sm border border-gray-100 dark:border-slate-800 overflow-hidden card-hover"
                 >
-                  <div className="p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                          ₹{listing.price.toLocaleString('en-IN')}/month
-                        </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {listing.userId?.hostelName || 'Hostel'}
-                        </p>
+                  <div className="p-8">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="p-3 bg-primary-50 dark:bg-primary-900/20 rounded-2xl">
+                         <span className="text-2xl">{listing.listingType === 'handover' ? '🎓' : '🏠'}</span>
+                      </div>
+                      <div className="flex flex-col items-end">
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                          listing.listingType === 'handover' 
+                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' 
+                            : 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300'
+                        }`}>
+                          {listing.listingType === 'handover' ? 'Handover' : 'PG'}
+                        </span>
                       </div>
                     </div>
 
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                    <div className="mb-6">
+                      <h4 className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter mb-1">
+                        ₹{listing.price.toLocaleString('en-IN')}<span className="text-sm text-gray-500 font-normal">/mo</span>
+                      </h4>
+                      <p className="text-sm text-gray-500 dark:text-slate-400 font-bold flex items-center gap-1">
+                        <span className="text-primary-600 text-base">📍</span>
+                        {listing.userId?.hostelName || 'Verified Location'}
+                      </p>
+                    </div>
+
+                    <p className="text-gray-600 dark:text-slate-300 text-sm mb-8 line-clamp-2 leading-relaxed font-medium">
                       {listing.roomDetails}
                     </p>
 
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-2 mb-8">
                       {listing.legacyBundle?.mattress && (
-                        <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-full">
-                          🛏️ Mattress
+                        <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-lg">
+                          Mattress
                         </span>
                       )}
                       {listing.legacyBundle?.cooler && (
-                        <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-full">
-                          ❄️ Cooler
-                        </span>
-                      )}
-                      {listing.legacyBundle?.shelf && (
-                        <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-full">
-                          📦 Shelf
-                        </span>
-                      )}
-                      {listing.legacyBundle?.lamp && (
-                        <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-full">
-                          💡 Lamp
+                        <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-lg">
+                          Cooler
                         </span>
                       )}
                     </div>
 
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      Available: {new Date(listing.availableDate).toLocaleDateString()}
+                    <div className="flex justify-between items-center border-t border-gray-50 dark:border-slate-800 pt-6">
+                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
+                         Available {new Date(listing.availableDate).toLocaleDateString()}
+                       </span>
+                       <div className="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-white scale-0 group-hover:scale-100 transition-transform duration-300 shadow-lg shadow-primary-500/40">
+                          →
+                       </div>
                     </div>
                   </div>
                 </Link>
@@ -148,23 +184,23 @@ export default function BrowsePage() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-2 mt-12">
+              <div className="flex justify-center items-center gap-3 mt-20">
                 <button
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                  className="p-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-slate-800 transition shadow-sm active:scale-90"
                 >
-                  ← Previous
+                  ←
                 </button>
                 <div className="flex gap-2">
                   {[...Array(totalPages)].map((_, i) => (
                     <button
                       key={i + 1}
                       onClick={() => setPage(i + 1)}
-                      className={`w-10 h-10 rounded-lg font-medium transition ${
+                      className={`w-12 h-12 rounded-2xl font-black transition-all ${
                         page === i + 1
-                          ? 'bg-blue-600 text-white shadow-md shadow-blue-200 dark:shadow-none'
-                          : 'border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                          ? 'bg-primary-600 text-white shadow-xl shadow-primary-500/30'
+                          : 'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-gray-500 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800'
                       }`}
                     >
                       {i + 1}
@@ -174,21 +210,22 @@ export default function BrowsePage() {
                 <button
                   onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                   disabled={page === totalPages}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                  className="p-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-slate-800 transition shadow-sm active:scale-90"
                 >
-                  Next →
+                  →
                 </button>
               </div>
             )}
           </>
         ) : (
-          <div className="text-center py-20 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
-            <p className="text-gray-500 dark:text-gray-400 text-xl mb-6">No listings available yet.</p>
+          <div className="text-center py-32 bg-white dark:bg-slate-900 rounded-[40px] border-2 border-dashed border-gray-200 dark:border-slate-800">
+             <div className="text-8xl mb-8 opacity-20">🛋️</div>
+            <p className="text-gray-500 dark:text-slate-400 text-2xl font-black tracking-tighter mb-8">No listings match your criteria.</p>
             <Link
               href="/create-listing"
-              className="inline-block px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold transition shadow-lg shadow-blue-200 dark:shadow-none"
+              className="inline-block px-10 py-4 bg-primary-600 text-white rounded-2xl font-black hover:bg-primary-700 transition shadow-2xl shadow-primary-500/40"
             >
-              Be the first to post a room
+              Post a listing
             </Link>
           </div>
         )}
