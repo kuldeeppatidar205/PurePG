@@ -12,6 +12,7 @@ async function fixIndexes() {
   try {
     await connectToDatabase();
     const db = mongoose.connection.db;
+    if (!db) throw new Error('DB not connected');
     const collection = db.collection('users');
 
     // 1. Check for empty strings in collegeEmail

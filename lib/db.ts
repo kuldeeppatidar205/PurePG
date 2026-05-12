@@ -1,38 +1,58 @@
-import mongoose, { Connection } from 'mongoose';
+import mongoose from 'mongoose';
 
-let cachedConnection: Connection | null = null;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-export async function connectToDatabase(): Promise<Connection> {
-  if (cachedConnection) {
-    return cachedConnection;
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+}
+
+/**
+ * Global is used here to maintain a cached connection across hot reloads
+ * in development. This prevents connections growing exponentially
+ * during API Route usage.
+ */
+let cached = (global as any).mongoose;
+
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null };
+}
+
+export async function connectToDatabase() {
+  if (cached.conn) {
+    return cached.conn;
   }
 
-  const mongoUri = process.env.MONGODB_URI;
-  if (!mongoUri) {
-    throw new Error('MONGODB_URI is not defined in environment variables');
-  }
-
-  try {
-    const connection = await mongoose.connect(mongoUri, {
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
       maxPoolSize: 10,
       minPoolSize: 2,
       connectTimeoutMS: 10000,
       socketTimeoutMS: 45000,
-    });
+    };
 
-    cachedConnection = connection.connection;
-    console.log('✓ MongoDB connected successfully');
-    return cachedConnection;
-  } catch (error) {
-    console.error('✗ MongoDB connection failed:', error instanceof Error ? error.message : String(error));
-    throw error;
+    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
+      console.log('✓ MongoDB connected successfully');
+      return mongoose;
+    });
   }
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    console.error('✗ MongoDB connection failed:', e);
+    throw e;
+  }
+
+  return cached.conn;
 }
 
 export async function disconnectFromDatabase(): Promise<void> {
-  if (cachedConnection) {
+  if (cached.conn) {
     await mongoose.disconnect();
-    cachedConnection = null;
+    cached.conn = null;
+    cached.promise = null;
     console.log('✓ MongoDB disconnected');
   }
 }

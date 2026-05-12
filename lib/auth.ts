@@ -13,7 +13,7 @@ export function signToken(payload: Omit<JWTPayload, 'iat' | 'exp'>): string {
     throw new Error('JWT_SECRET is not defined');
   }
 
-  const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+  const expiresIn = (process.env.JWT_EXPIRES_IN || '7d') as any;
   return jwt.sign(payload, secret, { expiresIn });
 }
 
@@ -30,7 +30,7 @@ export function verifyToken(token: string): JWTPayload {
   }
 }
 
-export function extractTokenFromHeader(authHeader?: string): string | null {
+export function extractTokenFromHeader(authHeader: string | null | undefined): string | null {
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return null;
   }

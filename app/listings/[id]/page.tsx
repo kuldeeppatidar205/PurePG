@@ -13,6 +13,23 @@ interface Listing {
   availableRooms?: number;
   totalRooms?: number;
   createdAt: string;
+  availableDate?: string;
+  address?: string;
+  amenities?: string[];
+  legacyBundle?: {
+    mattress?: boolean;
+    cooler?: boolean;
+    shelf?: boolean;
+    lamp?: boolean;
+    other?: string;
+  };
+  userId?: {
+    _id: string;
+    name: string;
+    hostelName?: string;
+    roomNumber?: string;
+    role: string;
+  };
 }
 
 interface Review {
@@ -185,7 +202,7 @@ export default function ListingDetailPage() {
     );
   }
 
-  const isOwner = userProfile && listing?.userId && userProfile.id === (typeof listing.userId === 'string' ? listing.userId : (listing.userId as any)._id);
+  const isOwner = userProfile && listing?.userId && userProfile.id === (typeof listing.userId === 'string' ? listing.userId : listing.userId._id);
   const canReview = userProfile && userProfile.role === 'student' && userProfile.verified && !isOwner;
 
   return (
@@ -311,7 +328,7 @@ export default function ListingDetailPage() {
                     <section>
                       <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 uppercase tracking-wider">Facilities</h3>
                       <div className="flex flex-wrap gap-3">
-                        {listing.amenities.map((amenity, idx) => (
+                        {listing.amenities.map((amenity: string, idx: number) => (
                           <div key={idx} className="px-4 py-2 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-xl font-bold">
                             ✨ {amenity}
                           </div>

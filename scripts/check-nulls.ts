@@ -12,6 +12,7 @@ async function checkNulls() {
   try {
     await connectToDatabase();
     const db = mongoose.connection.db;
+    if (!db) throw new Error('DB not connected');
     const collection = db.collection('users');
 
     const nullEmails = await collection.find({ collegeEmail: null }).toArray();

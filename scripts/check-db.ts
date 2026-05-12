@@ -36,7 +36,7 @@ async function checkDatabaseConnection() {
     console.log('✓ Your IP appears to be whitelisted on MongoDB Atlas\n');
 
     // Log connection stats
-    const stats = mongoose.connection.getClient().topology;
+    const stats = (mongoose.connection.getClient() as any).topology;
     console.log('📊 Connection Stats:');
     console.log('   - Topology:', stats?.description?.type || 'N/A');
     console.log('   - Servers connected:', stats?.description?.servers?.length || 0);
