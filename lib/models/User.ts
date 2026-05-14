@@ -7,7 +7,7 @@ export interface IUser extends Document {
   role: 'STUDENT' | 'OWNER' | 'GUEST';
   collegeEmail?: string;
   studentId?: string;
-  universityId?: mongoose.Types.ObjectId;
+  idCardImageUrl?: string;
   hostelName?: string;
   roomNumber?: string;
   phoneNumber?: string;
@@ -26,7 +26,7 @@ const userSchema = new Schema<IUser>(
     role: { type: String, enum: ['STUDENT', 'OWNER', 'GUEST'], default: 'STUDENT' },
     collegeEmail: { type: String, unique: true, sparse: true, lowercase: true },
     studentId: { type: String },
-    universityId: { type: Schema.Types.ObjectId, ref: 'University' },
+    idCardImageUrl: { type: String },
     hostelName: { type: String },
     roomNumber: { type: String },
     phoneNumber: { type: String },
@@ -36,8 +36,5 @@ const userSchema = new Schema<IUser>(
   },
   { timestamps: true }
 );
-
-userSchema.index({ universityId: 1 });
-userSchema.index({ collegeEmail: 1 });
 
 export const User = mongoose.models.User || mongoose.model<IUser>('User', userSchema);

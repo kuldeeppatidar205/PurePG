@@ -11,6 +11,7 @@ interface LegacyBundle {
 export interface IListing extends Document {
   userId: mongoose.Types.ObjectId;
   listingType: 'handover' | 'pg';
+  pgName?: string;
   roomDetails: string;
   price: number;
   availableDate: Date;

@@ -33,6 +33,7 @@ export async function GET(req: NextRequest) {
       hostelName: user.hostelName,
       roomNumber: user.roomNumber,
       studentId: user.studentId,
+      idCardImageUrl: user.idCardImageUrl,
       createdAt: user.createdAt,
     });
   } catch (error) {

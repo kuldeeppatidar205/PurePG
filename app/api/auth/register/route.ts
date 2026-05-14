@@ -5,7 +5,6 @@ import { registerSchema } from '@/lib/validators';
 import { signToken } from '@/lib/auth';
 import { sendEmail, generateVerificationEmailHtml } from '@/lib/email';
 import { User } from '@/lib/models/User';
-import { University } from '@/lib/models/University';
 import crypto from 'crypto';
 import { ZodError } from 'zod';
 
@@ -25,7 +24,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'This email is already in use' }, { status: 400 });
     }
 
-    let universityId = null;
     let collegeEmail = undefined;
     let studentId = undefined;
 
@@ -38,19 +36,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'This college email is already in use' }, { status: 400 });
       }
 
-      // Validate university email domain
-      const emailDomain = validated.collegeEmail.split('@')[1];
-      const university = await University.findOne({
-        emailDomains: { $in: [emailDomain] },
-      });
-
-      if (!university) {
-        return NextResponse.json(
-          { error: 'College email domain not whitelisted. Please use your official university email.' },
-          { status: 400 }
-        );
-      }
-      universityId = university._id;
       collegeEmail = validated.collegeEmail;
       studentId = validated.studentId;
     }
@@ -77,7 +62,7 @@ export async function POST(req: NextRequest) {
     // Only add student-specific fields if they exist
     if (collegeEmail) userObj.collegeEmail = collegeEmail;
     if (studentId) userObj.studentId = studentId;
-    if (universityId) userObj.universityId = universityId;
+    if (validated.idCardImageUrl) userObj.idCardImageUrl = validated.idCardImageUrl;
     if (validated.role === 'STUDENT') {
       if (validated.hostelName) userObj.hostelName = validated.hostelName;
       if (validated.roomNumber) userObj.roomNumber = validated.roomNumber;

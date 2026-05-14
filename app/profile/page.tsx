@@ -16,6 +16,7 @@ interface UserProfile {
   hostelName?: string;
   roomNumber?: string;
   studentId: string;
+  idCardImageUrl?: string;
   createdAt: string;
 }
 
@@ -354,6 +355,25 @@ export default function ProfilePage() {
                         </h3>
                         <p className="text-gray-900 dark:text-white font-medium break-all">{profile.studentId}</p>
                       </div>
+
+                      {profile.idCardImageUrl && (
+                        <div className="md:col-span-2 space-y-2">
+                          <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            Student ID Card
+                          </h3>
+                          <div className="relative group max-w-sm">
+                            <img 
+                              src={profile.idCardImageUrl} 
+                              alt="Student ID Card" 
+                              className="rounded-xl border border-gray-200 dark:border-gray-700 w-full hover:brightness-90 transition cursor-pointer"
+                              onClick={() => window.open(profile.idCardImageUrl, '_blank')}
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                              <span className="bg-black/50 text-white px-3 py-1 rounded-full text-xs font-bold">Click to Expand</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </>
                   )}
 

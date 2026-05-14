@@ -27,10 +27,10 @@ JWT_SECRET=your_secret_key_here
 NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 ```
 
-### 3. **Seed Universities**
-Initialize the database with university email domains:
+### 3. **Database Health Check**
+Verify your MongoDB connection:
 ```bash
-npm run db:seed
+npm run db:check
 ```
 
 ### 4. **Start Development Server**
@@ -48,7 +48,7 @@ The app will be available at: **http://localhost:3000**
 - ✅ User registration with college email verification
 - ✅ JWT-based authentication
 - ✅ Password hashing with bcryptjs
-- ✅ Email domain whitelist validation
+- ✅ Educational email domain validation (.edu.in, .ac.in, .edu)
 - ✅ 24-hour verification token expiry
 
 ### Core Features
@@ -69,7 +69,7 @@ The app will be available at: **http://localhost:3000**
 - ✅ MongoDB with Mongoose ORM
 - ✅ Connection pooling
 - ✅ Schema validation
-- ✅ Three main collections: Users, Listings, Universities
+- ✅ Two main collections: Users, Listings
 
 ---
 
@@ -110,9 +110,8 @@ Health:
 
 ### Database Schemas
 ```
-User: email, passwordHash, collegeEmail, studentId, university, verification status
+User: email, passwordHash, collegeEmail, studentId, verification status
 Listing: userId, roomDetails, price, availableDate, legacyBundle, status
-University: name, emailDomains (whitelist)
 ```
 
 ---
@@ -145,21 +144,7 @@ npm run lint
 
 # Check MongoDB connection
 npm run db:check
-
-# Seed universities to database
-npm run db:seed
 ```
-
----
-
-## 🎓 Supported Universities (Seeded)
-
-- Indian Institute of Technology Kanpur
-- Delhi University
-- Mumbai University
-- Bangalore University
-
-Add more universities by editing `scripts/seed-db.ts`
 
 ---
 
@@ -171,13 +156,12 @@ Add more universities by editing `scripts/seed-db.ts`
    - Add to `.env.local`
 
 2. **Test the App**
-   - Register with your college email
+   - Register with your college email (must end in .edu.in, .ac.in, .edu)
    - Verify email (check console in dev mode)
    - Create a room listing
    - Browse and view listings
 
 3. **Customize**
-   - Update universities in `scripts/seed-db.ts`
    - Modify UI colors in Tailwind classes
    - Add more amenities to `legacyBundle`
 

@@ -8,17 +8,21 @@ export const registerSchema = z.object({
   role: z.enum(['STUDENT', 'OWNER', 'GUEST']).default('STUDENT'),
   collegeEmail: z.string().email('Invalid college email format').optional().or(z.literal('')),
   studentId: z.string().optional().or(z.literal('')),
+  idCardImageUrl: z.string().optional().or(z.literal('')),
   hostelName: z.string().optional(),
   roomNumber: z.string().optional(),
   phoneNumber: z.string().optional(),
 }).refine((data) => {
   if (data.role === 'STUDENT' && data.collegeEmail) {
-    const domain = data.collegeEmail.split('@')[1];
-    return domain.endsWith('.edu') || domain.endsWith('.in') || domain.endsWith('.edu.in');
+    const domain = data.collegeEmail.split('@')[1].toLowerCase();
+    return domain.endsWith('.edu.in') || 
+           domain.endsWith('.ac.in') || 
+           domain.endsWith('.edu') || 
+           domain.endsWith('.res.in');
   }
   return true;
 }, {
-  message: 'Students must use a .edu or .in email address.',
+  message: 'Students must use a valid educational email (.edu.in, .ac.in, .edu, etc.)',
   path: ['collegeEmail'],
 });
 
@@ -69,14 +73,6 @@ export const reviewSchema = z.object({
 });
 
 export type ReviewInput = z.infer<typeof reviewSchema>;
-
-// University Schema
-export const universitySchema = z.object({
-  name: z.string().min(3, 'University name is required'),
-  emailDomains: z.array(z.string()).min(1, 'At least one email domain is required'),
-});
-
-export type UniversityInput = z.infer<typeof universitySchema>;
 
 // Profile Update Schema
 export const profileUpdateSchema = z.object({

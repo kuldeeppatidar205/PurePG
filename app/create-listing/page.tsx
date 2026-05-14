@@ -53,13 +53,44 @@ function CreateListingForm() {
   const captureLocation = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          
           setFormData(prev => ({
             ...prev,
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lat,
+            lng
           }));
-          console.log("📍 Location captured:", position.coords.latitude, position.coords.longitude);
+          console.log("📍 Location captured:", lat, lng);
+
+          // Reverse geocode to get a human-readable address
+          try {
+            const res = await fetch(`https://photon.komoot.io/reverse?lon=${lng}&lat=${lat}`);
+            const data = await res.json();
+            
+            if (data && data.features && data.features.length > 0) {
+              const props = data.features[0].properties;
+              
+              // Construct a detailed address
+              const addressParts = [];
+              if (props.name) addressParts.push(props.name);
+              if (props.street) addressParts.push(props.street);
+              if (props.district) addressParts.push(props.district);
+              if (props.city) addressParts.push(props.city);
+              else if (props.locality) addressParts.push(props.locality);
+              
+              const detectedAddress = addressParts.join(', ');
+              
+              setFormData(prev => ({
+                ...prev,
+                address: prev.address || detectedAddress // Don't overwrite if user already typed something
+              }));
+              console.log("🗺️ Detected Address (Photon):", detectedAddress);
+            }
+          } catch (error) {
+            console.error("Error reverse geocoding:", error);
+          }
         },
         (error) => {
           console.error("Error capturing location:", error);
@@ -159,6 +190,7 @@ function CreateListingForm() {
         roomDetails: formData.roomDetails,
         price: price,
         availableDate: formData.availableDate ? new Date(formData.availableDate).toISOString() : undefined,
+        address: formData.address,
         lat: formData.lat,
         lng: formData.lng,
       };

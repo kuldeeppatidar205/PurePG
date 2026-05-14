@@ -106,12 +106,12 @@ export async function POST(req: NextRequest) {
           l.coordinates.lat,
           l.coordinates.lng
         );
-        return d <= 40;
+        return d <= 25;
       });
 
       if (duplicate) {
         return NextResponse.json({ 
-          error: 'A listing at this location already exists (within 40m). Please add a review to the existing listing instead.',
+          error: 'A listing at this location already exists (within 25m). Please add a review to the existing listing instead.',
           existingListingId: duplicate._id 
         }, { status: 409 });
       }
@@ -124,7 +124,7 @@ export async function POST(req: NextRequest) {
       pgName: validated.pgName,
       roomDetails: validated.roomDetails,
       price: validated.price,
-      availableDate: new Date(validated.availableDate),
+      availableDate: validated.availableDate ? new Date(validated.availableDate) : new Date(),
       legacyBundle: validated.listingType === 'handover' ? validated.legacyBundle : undefined,
       address: validated.address,
       amenities: validated.amenities,

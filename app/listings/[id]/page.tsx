@@ -256,7 +256,10 @@ export default function ListingDetailPage() {
                 </h1>
                 <p className="text-lg sm:text-2xl text-gray-600 dark:text-gray-300 flex items-center flex-wrap gap-2">
                   <span className="text-blue-600">📍</span>
-                  {listing.pgName || listing.userId?.hostelName || listing.address || 'Verified Location'}
+                  <span className="font-bold">{listing.pgName || listing.userId?.hostelName || 'Verified Property'}</span>
+                  {listing.address && (
+                    <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-lg ml-1">• {listing.address}</span>
+                  )}
                   {listing.coordinates && (
                     <a
                       href={`https://www.google.com/maps/search/?api=1&query=${listing.coordinates.lat},${listing.coordinates.lng}`}
