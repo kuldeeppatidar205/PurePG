@@ -280,11 +280,9 @@ export default function Home() {
           </div>
           
           <div className="mt-8 pt-8 border-t border-gray-200 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 dark:text-slate-400">
-             <p>&copy; {new Date().getFullYear()} Verisite, Inc. All rights reserved.</p>
+             <p>&copy; {new Date().getFullYear()} Verisite</p>
              <div className="flex gap-4">
-                <span className="hover:underline cursor-pointer">Privacy</span>
-                <span className="hover:underline cursor-pointer">Terms</span>
-                <span className="hover:underline cursor-pointer">Sitemap</span>
+                Made with  &#9829;  by Kuldeep patidar
              </div>
           </div>
         </div>
